@@ -1,0 +1,56 @@
+spring:
+  application:
+    name :  eureka-server
+  cloud:
+    service-registry:
+      auto-registration: false
+
+server:
+  port: 8761
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrices
+          - circuitbreakers
+  health:
+    defaults:
+      enabled: true
+    readinessstate:
+      enabled: true
+    livenessstate:
+      enabled: true
+    diskspace:
+      enabled: true  # Monitor disk space
+    db:
+      enabled: false  # Disable database health check if not needed
+
+
+eureka:
+  dashboard:
+    path: /  # Default UI available at http://localhost:8761
+
+  instance:
+    hostname: localhost  # Change to actual hostname in production
+    lease-renewal-interval-in-seconds: 30  # Heartbeat interval for clients (default: 30s)
+    lease-expiration-duration-in-seconds: 90  # Expiration timeout (default: 90s)
+  client:
+    register-with-eureka: false  # Do not register Eureka Server with itself
+    fetch-registry: false  # Do not fetch registry since it's a standalone server
+
+  server:
+    enable-self-preservation: true  # Default: true, prevents removing instances due to network issues
+    eviction-interval-timer-in-ms: 60000  # Instance eviction interval (default: 60s)
+
+logging:
+  level:
+    com.netflix.eureka: DEBUG  # Enable Eureka debug logs
+    org.springframework: INFO  # Spring logs at info level
+
