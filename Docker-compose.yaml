@@ -1,0 +1,38 @@
+version: '3.8'
+
+networks:
+  microservices-network:
+    driver: bridge # Custom network
+
+services:
+  eureka-server:
+    image: sendebojyoti/eureka-server:0.0.1-SNAPSHOT
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+
+  api-gateway:
+    image: sendebojyoti/apigateway-server:0.0.1-SNAPSHOT
+    container_name: api-gateway
+    depends_on:
+      - eureka-server
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+    networks:
+      - microservices-network
+
+  microservice:
+    image: sendebojyoti/ms-server:0.0.1-SNAPSHOT
+    container_name: microservice
+    depends_on:
+      - eureka-server
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8761/eureka/"
+    networks:
+      - microservices-network
