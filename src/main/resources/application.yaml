@@ -46,12 +46,14 @@ eureka:
     fetch-registry: false  # Do not fetch registry since it's a standalone server
 
   server:
+    renewalPercentThreshold: 0.7
+    renewalThresholdUpdateIntervalMs: 9000000
     waitTimeInMsWhenSyncEmpty: 0
     enable-self-preservation: true  # Default: true, prevents removing instances due to network issues
     eviction-interval-timer-in-ms: 60000  # Instance eviction interval (default: 60s)
 
 logging:
   level:
-    web: error
-    root: error
+    web: info
+    root: info
 
